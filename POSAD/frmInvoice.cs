@@ -24,17 +24,22 @@ namespace POSAD
         int qty;
         string id;
         string price;
+        string loginUserName;
+        string loginUserRole;
  
 
 
 
         string stitle = "Point Of Sales";
-        public frmInvoice()
+        public frmInvoice(string logUserName, string logUserRole)
         {
             InitializeComponent();
             cn = new SqlConnection(dbcon.myConnection());
             GetTranNo();
             lblDate.Text = DateTime.Now.ToShortDateString();
+
+            loginUserName = logUserName;
+            loginUserRole = logUserRole;
       
         }
 
@@ -417,7 +422,7 @@ namespace POSAD
                         this.cm.ExecuteNonQuery();
                         this.cn.Close();
                     }
-                    frmReportA4 recept = new frmReportA4(this, cus);
+                    frmReportA4 recept = new frmReportA4(this, cus, loginUserName, loginUserRole);
                     //recept.LoadRecept("Test", "Test2");
                     recept.LoadA4Report();
                     recept.ShowDialog();

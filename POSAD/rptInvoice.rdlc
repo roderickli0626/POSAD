@@ -2,18 +2,18 @@
 <Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner">
   <AutoRefresh>0</AutoRefresh>
   <DataSources>
-    <DataSource Name="POSDataSet">
+    <DataSource Name="POSAD">
       <ConnectionProperties>
         <DataProvider>System.Data.DataSet</DataProvider>
         <ConnectString>/* Local Connection */</ConnectString>
       </ConnectionProperties>
-      <rd:DataSourceID>9b2ccddc-97f8-4a04-9b72-248c151403af</rd:DataSourceID>
+      <rd:DataSourceID>f29d3ef0-2e2d-490f-b922-d519f92556eb</rd:DataSourceID>
     </DataSource>
   </DataSources>
   <DataSets>
-    <DataSet Name="DataSetA4">
+    <DataSet Name="DataSet2">
       <Query>
-        <DataSourceName>POSDataSet</DataSourceName>
+        <DataSourceName>POSAD</DataSourceName>
         <CommandText>/* Local Query */</CommandText>
       </Query>
       <Fields>
@@ -53,14 +53,24 @@
           <DataField>pdesc</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
+        <Field Name="unit">
+          <DataField>unit</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="tax">
+          <DataField>tax</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="paymentTerms">
+          <DataField>paymentTerms</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
       </Fields>
       <rd:DataSetInfo>
-        <rd:DataSetName>POSDataSet</rd:DataSetName>
-        <rd:SchemaPath>C:\Users\alemg\source\repos\POSAD\POSAD\POSDataSet.xsd</rd:SchemaPath>
-        <rd:TableName>dtInvoiceA4</rd:TableName>
-        <rd:TableAdapterFillMethod />
-        <rd:TableAdapterGetDataMethod />
-        <rd:TableAdapterName />
+        <rd:DataSetName>POSAD</rd:DataSetName>
+        <rd:TableName>POSDataSet</rd:TableName>
+        <rd:ObjectDataSourceSelectMethod>dtInvoiceA4</rd:ObjectDataSourceSelectMethod>
+        <rd:ObjectDataSourceType>POSAD.POSDataSet, POSDataSet.Designer.cs.dll, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</rd:ObjectDataSourceType>
       </rd:DataSetInfo>
     </DataSet>
   </DataSets>
@@ -75,7 +85,7 @@
                   <Width>0.39236in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>0.90625in</Width>
+                  <Width>0.82985in</Width>
                 </TablixColumn>
                 <TablixColumn>
                   <Width>2.78821in</Width>
@@ -665,7 +675,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Fields!total.Value</Value>
+                                  <Value>=(Fields!total.Value)*(1-(Fields!disc.Value)/100)*(1+(Fields!tax.Value)/100)</Value>
                                   <Style>
                                     <Format>#,0.00;(#,0.00)</Format>
                                   </Style>
@@ -765,14 +775,14 @@
                     <TablixCell />
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="Total">
+                        <Textbox Name="total1">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Min(Fields!Total.Value)</Value>
+                                  <Value>=Min(Fields!total.Value)</Value>
                                   <Style>
                                     <FontWeight>Bold</FontWeight>
                                     <Format>#,0.00;(#,0.00)</Format>
@@ -784,7 +794,7 @@
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Total</rd:DefaultName>
+                          <rd:DefaultName>total1</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>LightGrey</Color>
@@ -875,14 +885,14 @@
                     <TablixCell />
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="receivedAmount">
+                        <Textbox Name="total2">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Min(Fields!receivedAmount.Value)</Value>
+                                  <Value>=Fields!total.Value</Value>
                                   <Style>
                                     <FontWeight>Bold</FontWeight>
                                     <Format>#,0.00;(#,0.00)</Format>
@@ -894,7 +904,7 @@
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>receivedAmount</rd:DefaultName>
+                          <rd:DefaultName>total2</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>LightGrey</Color>
@@ -985,16 +995,17 @@
                     <TablixCell />
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="Textbox28">
+                        <Textbox Name="DueDate2">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value />
+                                  <Value>=Parameters!tollsum.Value</Value>
                                   <Style>
                                     <FontWeight>Bold</FontWeight>
+                                    <Format>#,0.00;(#,0.00)</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1003,11 +1014,11 @@
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Textbox28</rd:DefaultName>
+                          <rd:DefaultName>DueDate</rd:DefaultName>
+                          <ZIndex>4</ZIndex>
                           <Style>
                             <Border>
-                              <Color>LightGrey</Color>
-                              <Style>Solid</Style>
+                              <Style>None</Style>
                             </Border>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
@@ -1053,11 +1064,11 @@
                 </TablixMember>
               </TablixMembers>
             </TablixRowHierarchy>
-            <DataSetName>DataSetA4</DataSetName>
+            <DataSetName>DataSet2</DataSetName>
             <Top>0.06944in</Top>
             <Left>0.27604in</Left>
             <Height>1.25in</Height>
-            <Width>7.67411in</Width>
+            <Width>7.59771in</Width>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -1094,36 +1105,6 @@
               <PaddingBottom>2pt</PaddingBottom>
             </Style>
           </Textbox>
-          <Textbox Name="paymentTerms">
-            <CanGrow>true</CanGrow>
-            <KeepTogether>true</KeepTogether>
-            <Paragraphs>
-              <Paragraph>
-                <TextRuns>
-                  <TextRun>
-                    <Value>=First(Fields!paymentTerms.Value, "DataSet1")</Value>
-                    <Style />
-                  </TextRun>
-                </TextRuns>
-                <Style />
-              </Paragraph>
-            </Paragraphs>
-            <rd:DefaultName>paymentTerms</rd:DefaultName>
-            <Top>1.38889in</Top>
-            <Left>0.8559in</Left>
-            <Height>0.79042in</Height>
-            <Width>7.09424in</Width>
-            <ZIndex>2</ZIndex>
-            <Style>
-              <Border>
-                <Style>None</Style>
-              </Border>
-              <PaddingLeft>2pt</PaddingLeft>
-              <PaddingRight>2pt</PaddingRight>
-              <PaddingTop>2pt</PaddingTop>
-              <PaddingBottom>2pt</PaddingBottom>
-            </Style>
-          </Textbox>
           <Textbox Name="Textbox58">
             <CanGrow>true</CanGrow>
             <KeepTogether>true</KeepTogether>
@@ -1142,10 +1123,40 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox58</rd:DefaultName>
-            <Top>2.24875in</Top>
+            <Top>2.37375in</Top>
             <Left>0.27604in</Left>
             <Height>0.25in</Height>
             <Width>3.04167in</Width>
+            <ZIndex>2</ZIndex>
+            <Style>
+              <Border>
+                <Style>None</Style>
+              </Border>
+              <PaddingLeft>2pt</PaddingLeft>
+              <PaddingRight>2pt</PaddingRight>
+              <PaddingTop>2pt</PaddingTop>
+              <PaddingBottom>2pt</PaddingBottom>
+            </Style>
+          </Textbox>
+          <Textbox Name="Textbox26">
+            <CanGrow>true</CanGrow>
+            <KeepTogether>true</KeepTogether>
+            <Paragraphs>
+              <Paragraph>
+                <TextRuns>
+                  <TextRun>
+                    <Value>=Parameters!userrole.Value</Value>
+                    <Style />
+                  </TextRun>
+                </TextRuns>
+                <Style />
+              </Paragraph>
+            </Paragraphs>
+            <rd:DefaultName>Textbox2</rd:DefaultName>
+            <Top>2.02778in</Top>
+            <Left>0.8559in</Left>
+            <Height>0.25in</Height>
+            <Width>2.73958in</Width>
             <ZIndex>3</ZIndex>
             <Style>
               <Border>
@@ -1157,31 +1168,56 @@
               <PaddingBottom>2pt</PaddingBottom>
             </Style>
           </Textbox>
-          <Textbox Name="DueDate2">
+          <Textbox Name="Textbox28">
             <CanGrow>true</CanGrow>
             <KeepTogether>true</KeepTogether>
             <Paragraphs>
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value>=Parameters!tollsum.Value</Value>
-                    <Style>
-                      <FontWeight>Bold</FontWeight>
-                      <Format>#,0.00;(#,0.00)</Format>
-                    </Style>
+                    <Value>=Parameters!username.Value</Value>
+                    <Style />
                   </TextRun>
                 </TextRuns>
-                <Style>
-                  <TextAlign>Right</TextAlign>
-                </Style>
+                <Style />
               </Paragraph>
             </Paragraphs>
-            <rd:DefaultName>DueDate</rd:DefaultName>
-            <Top>1.06944in</Top>
-            <Left>7.1064in</Left>
+            <rd:DefaultName>Textbox2</rd:DefaultName>
+            <Top>1.70833in</Top>
+            <Left>0.8559in</Left>
             <Height>0.25in</Height>
-            <Width>0.84151in</Width>
+            <Width>2.73958in</Width>
             <ZIndex>4</ZIndex>
+            <Style>
+              <Border>
+                <Style>None</Style>
+              </Border>
+              <PaddingLeft>2pt</PaddingLeft>
+              <PaddingRight>2pt</PaddingRight>
+              <PaddingTop>2pt</PaddingTop>
+              <PaddingBottom>2pt</PaddingBottom>
+            </Style>
+          </Textbox>
+          <Textbox Name="Textbox30">
+            <CanGrow>true</CanGrow>
+            <KeepTogether>true</KeepTogether>
+            <Paragraphs>
+              <Paragraph>
+                <TextRuns>
+                  <TextRun>
+                    <Value>=Parameters!paymentTerms.Value</Value>
+                    <Style />
+                  </TextRun>
+                </TextRuns>
+                <Style />
+              </Paragraph>
+            </Paragraphs>
+            <rd:DefaultName>Textbox2</rd:DefaultName>
+            <Top>1.40278in</Top>
+            <Left>0.8559in</Left>
+            <Height>0.25in</Height>
+            <Width>2.73958in</Width>
+            <ZIndex>5</ZIndex>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -1196,7 +1232,7 @@
         <Height>7.59353cm</Height>
         <Style />
       </Body>
-      <Width>20.59026cm</Width>
+      <Width>23.68588cm</Width>
       <Page>
         <PageHeader>
           <Height>8.06978cm</Height>
@@ -1445,7 +1481,7 @@
               <Top>1.46875in</Top>
               <Left>0.27604in</Left>
               <Height>0.25in</Height>
-              <Width>2.19396in</Width>
+              <Width>1.39583in</Width>
               <ZIndex>7</ZIndex>
               <Style>
                 <Border>
@@ -1564,8 +1600,9 @@
               </Style>
             </Textbox>
             <Image Name="Image1">
-              <Source>Embedded</Source>
-              <Value>metrolightlogo15</Value>
+              <Source>Database</Source>
+              <Value>=System.Convert.FromBase64String(Parameters!logo.Value)</Value>
+              <MIMEType>image/jpeg</MIMEType>
               <Sizing>FitProportional</Sizing>
               <Top>0.63182cm</Top>
               <Left>0.70114cm</Left>
@@ -1945,11 +1982,23 @@
       <DataType>String</DataType>
       <Prompt>ReportParameter1</Prompt>
     </ReportParameter>
+    <ReportParameter Name="paymentTerms">
+      <DataType>String</DataType>
+      <Prompt>ReportParameter1</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="username">
+      <DataType>String</DataType>
+      <Prompt>ReportParameter1</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="userrole">
+      <DataType>String</DataType>
+      <Prompt>ReportParameter1</Prompt>
+    </ReportParameter>
   </ReportParameters>
   <ReportParametersLayout>
     <GridLayoutDefinition>
       <NumberOfColumns>4</NumberOfColumns>
-      <NumberOfRows>3</NumberOfRows>
+      <NumberOfRows>4</NumberOfRows>
       <CellDefinitions>
         <CellDefinition>
           <ColumnIndex>0</ColumnIndex>
@@ -2010,6 +2059,21 @@
           <ColumnIndex>3</ColumnIndex>
           <RowIndex>2</RowIndex>
           <ParameterName>tollsum</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>0</ColumnIndex>
+          <RowIndex>3</RowIndex>
+          <ParameterName>paymentTerms</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>1</ColumnIndex>
+          <RowIndex>3</RowIndex>
+          <ParameterName>username</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>2</ColumnIndex>
+          <RowIndex>3</RowIndex>
+          <ParameterName>userrole</ParameterName>
         </CellDefinition>
       </CellDefinitions>
     </GridLayoutDefinition>

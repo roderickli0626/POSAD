@@ -60,7 +60,8 @@ namespace POSAD
                 if (MessageBox.Show("Add discount? Click yes to confirm", stitle, MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                 {
                     cn.Open();
-                    cm = new SqlCommand("UPDATE tbCart SET disc_percent=@disc_percent,disc=ISNULL(price,0)*ISNULL(@disc_percent,0)/100 WHERE id = @id", cn);
+                    //cm = new SqlCommand("UPDATE tbCart SET disc_percent=@disc_percent,disc=ISNULL(price,0)*ISNULL(@disc_percent,0)/100 WHERE id = @id", cn);
+                    cm = new SqlCommand("UPDATE tbCart SET disc_percent=@disc_percent,disc=ISNULL(total,0)*ISNULL(@disc_percent,0)/100 WHERE id = @id", cn);
                     cm.Parameters.AddWithValue("@disc_percent", double.Parse(txtDiscount.Text));
                     cm.Parameters.AddWithValue("@id", int.Parse(lbId.Text));
                     cm.ExecuteNonQuery();

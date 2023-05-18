@@ -22,17 +22,24 @@ namespace POSAD
         SqlDataReader dr;
         string store;
         string address;
+        string paymentTerms;
         string img;
         frmInvoice cashier;
         clsCustomer cust;
 
-        public frmReportA4(frmInvoice cash, clsCustomer cus)
+        string loginUserName;
+        string loginUserRole;
+
+        public frmReportA4(frmInvoice cash, clsCustomer cus, string username, string role)
         {
             InitializeComponent();
             cn = new SqlConnection(dbcon.myConnection());
             cashier = cash;
             cust = cus;
-          
+
+            loginUserName = username;
+            loginUserRole = role;
+
             LoadStore();
         }
         public void LoadStore()
@@ -45,6 +52,7 @@ namespace POSAD
             {
                 store = dr["store"].ToString();
                 address = dr["address"].ToString();
+                paymentTerms = dr["paymentTerms"].ToString();
 
                 byte[] imgData = (byte[])dr["logo"];
                 img = Convert.ToBase64String(imgData);
@@ -78,7 +86,7 @@ namespace POSAD
                 SqlDataAdapter da = new SqlDataAdapter();
 
                 cn.Open();
-                da.SelectCommand = new SqlCommand("SELECT c.id, c.transno, c.pcode, c.price, c.qty, c.disc, c.total, c.sdate, c.status, p.pdesc FROM tbCart AS c INNER JOIN tbProduct AS p ON p.pcode=c.pcode WHERE c.transno LIKE '" + cashier.lblTranNo.Text + "'", cn);
+                da.SelectCommand = new SqlCommand("SELECT c.id, c.transno, c.pcode, c.price, c.qty, c.disc_percent as disc, c.total, c.sdate, c.status, p.pdesc, p.unit, p.tax FROM tbCart AS c INNER JOIN tbProduct AS p ON p.pcode=c.pcode WHERE c.transno LIKE '" + cashier.lblTranNo.Text + "'", cn);
                 da.Fill(ds.Tables["dtInvoiceA4"]);
                 cn.Close();
 
@@ -90,11 +98,17 @@ namespace POSAD
                 ////ReportParameter pChange = new ReportParameter("pChange", pchange);
                 ReportParameter pStore = new ReportParameter("pStore", store);
                 ReportParameter pAddress = new ReportParameter("pAddress", address);
+                ReportParameter pPaymentTerms = new ReportParameter("paymentTerms", paymentTerms);
                 ReportParameter InvoiceDate = new ReportParameter("InvoiceDate", cashier.lblDate.Text);
                 ReportParameter logo = new ReportParameter("logo", img);
                 //ReportParameter pTransaction = new ReportParameter("pTransaction", "Invoice #: " + cashier.lblTranNo.Text);
                 ReportParameter totallsum = new ReportParameter("tollsum", cashier.lblDisplayTotal.Text);
-                 
+
+                //Logged in UserName and Role
+                ReportParameter logUserName = new ReportParameter("username", loginUserName);
+                ReportParameter logUserRole = new ReportParameter("userrole", loginUserRole);
+                
+
 
                 // Customer Data
                 ReportParameter Customer = new ReportParameter("CustomerName", cust.Customer);
@@ -123,17 +137,22 @@ namespace POSAD
                 ////reportViewer1.LocalReport.SetParameters(pChange);
                 reportViewer1.LocalReport.SetParameters(pStore);
                 reportViewer1.LocalReport.SetParameters(pAddress);
+                reportViewer1.LocalReport.SetParameters(pPaymentTerms);
                 reportViewer1.LocalReport.SetParameters(InvoiceDate);
                 reportViewer1.LocalReport.SetParameters(logo);
-             
+
+                reportViewer1.LocalReport.SetParameters(logUserName);
+                reportViewer1.LocalReport.SetParameters(logUserRole);
+
                 //reportViewer1.LocalReport.SetParameters(pCashier);
 
-              
+
 
 
 
                 //rptDataSourece = new ReportDataSource("DataSetA4", ds.Tables["dtInvoiceA4"]);
-                rptDataSourece = new ReportDataSource("POSDataSet", ds.Tables["dtInvoiceA4"]);
+                rptDataSourece = new ReportDataSource("DataSet2", ds.Tables["dtInvoiceA4"]);
+                //rptDataSourece = new ReportDataSource("POSDataSet", ds.Tables["dtInvoiceA4"]);
                 reportViewer1.LocalReport.DataSources.Add(rptDataSourece);
                 reportViewer1.SetDisplayMode(Microsoft.Reporting.WinForms.DisplayMode.PrintLayout);
                 reportViewer1.ZoomMode = ZoomMode.Percent;

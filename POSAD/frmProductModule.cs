@@ -85,7 +85,7 @@ namespace POSAD
             {
                 if (MessageBox.Show("Are you sure want to update this product?", "Update Product", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                 {
-                    cm = new SqlCommand("UPDATE tbProduct SET barcode=@barcode,pdesc=@pdesc,bid=@bid,cid=@cid,price=@price, reorder=@reorder WHERE pcode LIKE @pcode", cn);
+                    cm = new SqlCommand("UPDATE tbProduct SET barcode=@barcode,pdesc=@pdesc,bid=@bid,cid=@cid,price=@price, reorder=@reorder, tax=@tax, unit=@unit WHERE pcode LIKE @pcode", cn);
                     cm.Parameters.AddWithValue("@pcode", txtPcode.Text);
                     cm.Parameters.AddWithValue("@barcode", txtBarcode.Text);
                     cm.Parameters.AddWithValue("@pdesc", txtPdesc.Text);
@@ -93,6 +93,8 @@ namespace POSAD
                     cm.Parameters.AddWithValue("@cid", cboCategory.SelectedValue);
                     cm.Parameters.AddWithValue("@price", double.Parse(txtPrice.Text));
                     cm.Parameters.AddWithValue("@reorder", UDReOrder.Value);
+                    cm.Parameters.AddWithValue("@tax", double.Parse(txtTax.Text));
+                    cm.Parameters.AddWithValue("@unit", txtUnit.Text);
                     cn.Open();
                     cm.ExecuteNonQuery();
                     cn.Close();
@@ -115,7 +117,7 @@ namespace POSAD
             {
                 if (MessageBox.Show("Are you sure want to save this product?", "Save Product", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                 {
-                    cm = new SqlCommand("INSERT INTO tbProduct(pcode, barcode, pdesc, bid, cid, price, reorder)VALUES (@pcode,@barcode,@pdesc,@bid,@cid,@price, @reorder)", cn);
+                    cm = new SqlCommand("INSERT INTO tbProduct(pcode, barcode, pdesc, bid, cid, price, reorder, tax, unit)VALUES (@pcode,@barcode,@pdesc,@bid,@cid,@price, @reorder, @tax, @unit)", cn);
                     cm.Parameters.AddWithValue("@pcode", txtPcode.Text);
                     cm.Parameters.AddWithValue("@barcode", txtBarcode.Text);
                     cm.Parameters.AddWithValue("@pdesc", txtPdesc.Text);
@@ -123,6 +125,8 @@ namespace POSAD
                     cm.Parameters.AddWithValue("@cid", cboCategory.SelectedValue);
                     cm.Parameters.AddWithValue("@price", double.Parse(txtPrice.Text));
                     cm.Parameters.AddWithValue("@reorder", UDReOrder.Value);
+                    cm.Parameters.AddWithValue("@tax", double.Parse(txtTax.Text));
+                    cm.Parameters.AddWithValue("@unit", txtUnit.Text);
                     cn.Open();
                     cm.ExecuteNonQuery();
                     cn.Close();

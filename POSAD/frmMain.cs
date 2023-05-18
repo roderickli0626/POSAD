@@ -165,7 +165,7 @@ namespace POSAD
         private void btnInvoice_Click(object sender, EventArgs e)
         {
             hideSubmenu();
-            frmInvoice store = new frmInvoice();
+            frmInvoice store = new frmInvoice(lblUsername.Text, lblRole.Text);
             store.ShowDialog();
         }
 
