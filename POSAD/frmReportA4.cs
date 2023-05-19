@@ -11,6 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Microsoft.Reporting.WinForms;
+using QRCoder;
 
 namespace POSAD
 {
@@ -24,6 +25,7 @@ namespace POSAD
         string address;
         string paymentTerms;
         string img;
+        string QRimg;
         frmInvoice cashier;
         clsCustomer cust;
 
@@ -56,6 +58,7 @@ namespace POSAD
 
                 byte[] imgData = (byte[])dr["logo"];
                 img = Convert.ToBase64String(imgData);
+
                 //using (MemoryStream ms = new MemoryStream(imgData))
                 //{
                 //   .Image = Image.FromStream(ms);
@@ -101,8 +104,25 @@ namespace POSAD
                 ReportParameter pPaymentTerms = new ReportParameter("paymentTerms", paymentTerms);
                 ReportParameter InvoiceDate = new ReportParameter("InvoiceDate", cashier.lblDate.Text);
                 ReportParameter logo = new ReportParameter("logo", img);
+
+                //QRcode for this Report
+                QRCodeGenerator qRCodeGenerator = new QRCodeGenerator();
+                QRCodeData qrCodeData = qRCodeGenerator.CreateQrCode(cashier.lblTranNo.Text, QRCodeGenerator.ECCLevel.Q);
+                QRCode qrCode = new QRCode(qrCodeData);
+                using (Bitmap bitMap = qrCode.GetGraphic(5))
+                {
+                    using (MemoryStream ms = new MemoryStream())
+                    {
+                        bitMap.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
+                        byte[] byteImage = ms.ToArray();
+                        QRimg = Convert.ToBase64String(byteImage);
+                    }
+                }
+                ReportParameter QRcode = new ReportParameter("QRcode", QRimg);
+
                 //ReportParameter pTransaction = new ReportParameter("pTransaction", "Invoice #: " + cashier.lblTranNo.Text);
                 ReportParameter totallsum = new ReportParameter("tollsum", cashier.lblDisplayTotal.Text);
+                ReportParameter discsum = new ReportParameter("discsum", cashier.lblDiscount.Text);
 
                 //Logged in UserName and Role
                 ReportParameter logUserName = new ReportParameter("username", loginUserName);
@@ -128,6 +148,7 @@ namespace POSAD
                 reportViewer1.LocalReport.SetParameters(Email);
                 reportViewer1.LocalReport.SetParameters(Fax);
                 reportViewer1.LocalReport.SetParameters(totallsum);
+                reportViewer1.LocalReport.SetParameters(discsum);
 
                
                 //reportViewer1.LocalReport.SetParameters(pVat);
@@ -140,6 +161,7 @@ namespace POSAD
                 reportViewer1.LocalReport.SetParameters(pPaymentTerms);
                 reportViewer1.LocalReport.SetParameters(InvoiceDate);
                 reportViewer1.LocalReport.SetParameters(logo);
+                reportViewer1.LocalReport.SetParameters(QRcode);
 
                 reportViewer1.LocalReport.SetParameters(logUserName);
                 reportViewer1.LocalReport.SetParameters(logUserRole);
