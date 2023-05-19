@@ -1,4 +1,5 @@
-﻿using System;
+﻿using QRCoder;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -130,6 +131,13 @@ namespace POSAD
                 lblPcode.Text = dgvAdjustment.Rows[e.RowIndex].Cells[1].Value.ToString();
                 lblDesc.Text = dgvAdjustment.Rows[e.RowIndex].Cells[3].Value.ToString() + " " + dgvAdjustment.Rows[e.RowIndex].Cells[4].Value.ToString() + " " + dgvAdjustment.Rows[e.RowIndex].Cells[5].Value.ToString();
                 _qty = int.Parse(dgvAdjustment.Rows[e.RowIndex].Cells[7].Value.ToString());
+
+                string textForQRcode = dgvAdjustment.Rows[e.RowIndex].Cells[1].Value.ToString() + dgvAdjustment.Rows[e.RowIndex].Cells[3].Value.ToString() + dgvAdjustment.Rows[e.RowIndex].Cells[5].Value.ToString() + dgvAdjustment.Rows[e.RowIndex].Cells[6].Value.ToString();
+                QRCodeGenerator qRCodeGenerator = new QRCodeGenerator();
+                QRCodeData qrCodeData = qRCodeGenerator.CreateQrCode(textForQRcode, QRCodeGenerator.ECCLevel.Q);
+                QRCode qrCode = new QRCode(qrCodeData);
+                QRcode.BackgroundImage = qrCode.GetGraphic(2);
+
                 btnSave.Enabled = true;
             }
         }
