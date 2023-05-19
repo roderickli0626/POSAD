@@ -1,4 +1,5 @@
-﻿using System;
+﻿using QRCoder;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -59,6 +60,8 @@ namespace POSAD
                 product.txtTax.Text = dgvProduct.Rows[e.RowIndex].Cells[8].Value.ToString();
                 product.txtUnit.Text = dgvProduct.Rows[e.RowIndex].Cells[9].Value.ToString();
 
+                LoadQRCode(product);
+
                 product.txtPcode.Enabled = false;
                 product.btnSave.Enabled = false;
                 product.btnUpdate.Enabled = true;
@@ -77,10 +80,25 @@ namespace POSAD
             }
             LoadProduct();
         }
+        public void LoadQRCode(frmProductModule product)
+        {
+            if (product.txtPcode.Text != "")
+            {
+                QRCodeGenerator qRCodeGenerator = new QRCodeGenerator();
+                QRCodeData qrCodeData = qRCodeGenerator.CreateQrCode(product.txtPcode.Text + product.txtPdesc.Text + product.cboCategory.SelectedValue + product.txtPrice.Text, QRCodeGenerator.ECCLevel.Q);
+                QRCode qrCode = new QRCode(qrCodeData);
+                product.resultPictureBox.BackgroundImage = qrCode.GetGraphic(5);
+            }
+            else
+            {
+                product.resultPictureBox.Image = null;
+            }
+        }
 
         private void btnAdd_Click(object sender, EventArgs e)
         {
             frmProductModule productModule = new frmProductModule(this);
+            LoadQRCode(productModule);
             productModule.ShowDialog();
         }
 

@@ -426,7 +426,6 @@
         public System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.CheckBox checkShopware;
         private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.PictureBox resultPictureBox;
         private System.Windows.Forms.Label lblQr;
         public System.Windows.Forms.NumericUpDown UDReOrder;
         public System.Windows.Forms.TextBox txtPrice;
@@ -452,5 +451,6 @@
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.Label label12;
         public System.Windows.Forms.TextBox txtUnit;
+        public System.Windows.Forms.PictureBox resultPictureBox;
     }
 }
