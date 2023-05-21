@@ -211,7 +211,7 @@ namespace POSAD
                     i++;
                      total += Convert.ToDecimal(dr["total"].ToString());
                     discount += Convert.ToDouble(dr["disc"].ToString());
-                    dgvCash.Rows.Add(i, dr["id"].ToString(), dr["pcode"].ToString(), dr["pdesc"].ToString(), dr["price"].ToString(), dr["qty"].ToString(), dr["disc"].ToString(), double.Parse(dr["total"].ToString()).ToString("#,##0.00"));//
+                    dgvCash.Rows.Add(i, dr["id"].ToString(), dr["pcode"].ToString(), dr["pdesc"].ToString(), dr["price"].ToString(), dr["qty"].ToString(), dr["disc"].ToString(), (double.Parse(dr["total"].ToString()) - double.Parse(dr["disc"].ToString())).ToString("#,##0.00"));//
                     hascart = true;
                 }
                 dr.Close();
