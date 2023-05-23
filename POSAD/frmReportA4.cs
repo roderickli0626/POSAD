@@ -82,7 +82,8 @@ namespace POSAD
             {
                 //clsCustomer customer = new clsCustomer();
 
-                this.reportViewer1.LocalReport.ReportPath = Application.StartupPath + @"\Reports\rptInvoice.rdlc";
+                //this.reportViewer1.LocalReport.ReportPath = Application.StartupPath + @"\Reports\rptInvoice.rdlc";
+                this.reportViewer1.LocalReport.ReportPath = @"rptInvoice.rdlc";
                 this.reportViewer1.LocalReport.DataSources.Clear();
 
                 POSDataSet ds = new POSDataSet();

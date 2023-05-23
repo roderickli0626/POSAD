@@ -354,7 +354,9 @@
       <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="rptInvoice.rdlc" />
+    <EmbeddedResource Include="rptInvoice.rdlc">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="POSDataSet.xsc">
       <DependentUpon>POSDataSet.xsd</DependentUpon>

@@ -291,7 +291,7 @@ namespace POSAD
                 if (int.Parse(dgvCash.Rows[e.RowIndex].Cells[5].Value.ToString()) < i)
                 {
                     //dbcon.ExecuteQuery("UPDATE tbCart SET qty = qty + " + int.Parse(txtQty.Text) + " WHERE transno LIKE '" + lblTranNo.Text + "'  AND pcode LIKE '" + dgvCash.Rows[e.RowIndex].Cells[2].Value.ToString() + "'");
-                    dbcon.ExecuteQuery("UPDATE tbCart SET qty = qty + " + 1 + ", total = total + " + 1 * double.Parse(dgvCash.Rows[e.RowIndex].Cells[4].Value.ToString()) + " WHERE transno LIKE '" + lblTranNo.Text + "'  AND pcode LIKE '" + dgvCash.Rows[e.RowIndex].Cells[2].Value.ToString() + "'");
+                    dbcon.ExecuteQuery("UPDATE tbCart SET qty = qty + " + 1 + ", total = total + " + 1 * double.Parse(dgvCash.Rows[e.RowIndex].Cells[4].Value.ToString()) + ", disc = disc + price * disc_percent / 100" + " WHERE transno LIKE '" + lblTranNo.Text + "'  AND pcode LIKE '" + dgvCash.Rows[e.RowIndex].Cells[2].Value.ToString() + "'");
                     LoadCart();
                 }
                 else
@@ -314,7 +314,7 @@ namespace POSAD
                 {
                     if ((j - 1) >= 0)
                     {
-                        dbcon.ExecuteQuery("UPDATE tbCart SET qty = qty - " + 1 + ", total = total - " + 1 * double.Parse(dgvCash.Rows[e.RowIndex].Cells[4].Value.ToString()) + " WHERE transno LIKE '" + lblTranNo.Text + "'  AND pcode LIKE '" + dgvCash.Rows[e.RowIndex].Cells[2].Value.ToString() + "'");
+                        dbcon.ExecuteQuery("UPDATE tbCart SET qty = qty - " + 1 + ", total = total - " + 1 * double.Parse(dgvCash.Rows[e.RowIndex].Cells[4].Value.ToString()) + ", disc = disc - price * disc_percent / 100" + " WHERE transno LIKE '" + lblTranNo.Text + "'  AND pcode LIKE '" + dgvCash.Rows[e.RowIndex].Cells[2].Value.ToString() + "'");
                         LoadCart();
                     }
                     else
